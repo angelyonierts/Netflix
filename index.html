@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Iniciar sesión | Angel Netflix</title><link rel="icon" href="../imagenes/Login.jpg" type="image/jpeg"><link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body class="auth-page">
+    <div class="auth-backdrop"></div>
+    <header class="auth-header"><a class="netflix-logo" href="login.html" aria-label="Angel Netflix"><span>N</span><b>ANGEL NETFLIX</b></a></header>
+    <main class="auth-main">
+        <form class="login-card auth-screen" id="login-form" data-screen="login">
+            <h1>Iniciar sesión</h1>
+            <div class="form-alert" id="login-alert" role="alert" hidden>Usa cualquier correo y contraseña para entrar a la demostración.</div>
+            <label class="field"><span>Correo electrónico</span><input type="email" name="email" placeholder="Correo electrónico" autocomplete="email" required autofocus></label>
+            <label class="field"><span>Contraseña</span><input type="password" name="password" placeholder="Contraseña" autocomplete="current-password" minlength="6" required></label>
+            <button class="primary-button" type="submit">Iniciar sesión</button>
+            <div class="login-options"><label><input type="checkbox" name="remember"> <span>Recuérdame</span></label><a href="#forgot-password">¿Necesitas ayuda?</a></div>
+            <p class="new-user">¿Primera vez en Angel Netflix? <a href="#signup">Suscríbete ahora.</a></p><p class="captcha-copy">Esta página está protegida por Google reCAPTCHA para comprobar que no eres un robot.</p>
+        </form>
+
+        <form class="login-card auth-screen" id="signup-form" data-screen="signup" hidden>
+            <a class="auth-back-link" href="#login">← Volver a iniciar sesión</a>
+            <h1>Crear cuenta</h1>
+            <p class="auth-intro">Disfruta de películas, series y mucho más.</p>
+            <div class="form-alert" id="signup-alert" role="alert" hidden></div>
+            <label class="field"><span>Nombre</span><input type="text" name="name" placeholder="Nombre" autocomplete="name" required></label>
+            <label class="field"><span>Correo electrónico</span><input type="email" name="email" placeholder="Correo electrónico" autocomplete="email" required></label>
+            <label class="field"><span>Contraseña</span><input type="password" name="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="new-password" minlength="6" required></label>
+            <button class="primary-button" type="submit">Registrarme</button>
+            <p class="captcha-copy">Al registrarte aceptas nuestros términos de uso y reconoces nuestra política de privacidad.</p>
+        </form>
+
+        <form class="login-card auth-screen" id="forgot-password-form" data-screen="forgot-password" hidden>
+            <a class="auth-back-link" href="#login">← Volver a iniciar sesión</a>
+            <h1>¿Has olvidado tu contraseña?</h1>
+            <p class="auth-intro">Te enviaremos un enlace para restablecerla.</p>
+            <div class="form-alert" id="forgot-alert" role="alert" hidden></div>
+            <label class="field"><span>Correo electrónico</span><input type="email" name="email" placeholder="Correo electrónico" autocomplete="email" required></label>
+            <button class="primary-button" type="submit">Enviar enlace</button>
+            <p class="captcha-copy">Si existe una cuenta con ese correo, recibirás las instrucciones en unos minutos.</p>
+        </form>
+    </main>
+    <footer class="auth-footer"><p>¿Preguntas? Llama al 800-000-0000</p><div class="footer-links"><a href="#faq">Preguntas frecuentes</a><a href="#terms">Términos de uso</a><a href="#privacy">Privacidad</a><a href="#cookies">Preferencias de cookies</a></div><button class="language-button" type="button">Español ▾</button></footer>
+    <script>
+        const screens = document.querySelectorAll('.auth-screen');
+
+        function showScreen() {
+            const requestedScreen = window.location.hash.slice(1) || 'login';
+            const activeScreen = [...screens].some((screen) => screen.dataset.screen === requestedScreen)
+                ? requestedScreen
+                : 'login';
+
+            screens.forEach((screen) => {
+                screen.hidden = screen.dataset.screen !== activeScreen;
+            });
+        }
+
+        window.addEventListener('hashchange', showScreen);
+        showScreen();
+
+        document.querySelector('#login-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            if (!this.reportValidity()) return;
+            window.location.href = 'index.html';
+        });
+
+        document.querySelector('#signup-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            if (!this.reportValidity()) return;
+            const loginAlert = document.querySelector('#login-alert');
+            loginAlert.textContent = 'Tu cuenta se creó correctamente. Ya puedes iniciar sesión.';
+            loginAlert.hidden = false;
+            window.location.hash = 'login';
+        });
+
+        document.querySelector('#forgot-password-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            if (!this.reportValidity()) return;
+            const alert = document.querySelector('#forgot-alert');
+            alert.textContent = 'Si existe una cuenta con ese correo, recibirás un enlace para restablecer tu contraseña.';
+            alert.hidden = false;
+        });
+    </script>
+</body>
+</html>
